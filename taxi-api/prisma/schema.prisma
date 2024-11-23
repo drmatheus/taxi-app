@@ -12,3 +12,42 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Ride {
+  id          Int      @id @default(autoincrement())
+  date        DateTime
+  origin      String
+  destination String
+  distance    Float
+  duration    String
+  value       Float
+  driver_id   Int
+  customer_id String
+
+  driver      Driver   @relation(fields: [driver_id], references: [id])
+
+  @@map("rides")
+}
+
+model Rating {
+  id        Int     @id @default(autoincrement())
+  driver_id Int     @unique 
+  comment    String
+  rating      Int
+  driver    Driver  @relation(fields: [driver_id], references: [id])
+
+  @@map("ratings")
+}
+
+model Driver {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String   @db.Text
+  vehicle     String
+  minDistance Int
+  fee         Float
+  rating      Rating?  
+  rides       Ride[]   
+
+  @@map("drivers")
+}
