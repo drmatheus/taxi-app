@@ -1,23 +1,27 @@
 import { Outlet } from 'react-router-dom';
+import Header from '../components/layout/header';
+import Footer from '../components/layout/footer';
+import Container from '../components/layout/container';
+import { RideProvider } from '../context/ride';
+import EstimateRideForm from '../components/Home/estimateRideForm';
 
 const Home = () => {
   return (
-    <div>
-      <h1>Welcome to the Home Page</h1>
-      <nav>
-        <ul>
-          <li>
-            <a href="/new-ride">New Ride</a>
-          </li>
-          <li>
-            <a href="/history">History</a>
-          </li>
-        </ul>
-      </nav>
+    <main className="flex flex-col gap-8 min-h-screen bg-gray-200 ">
+      <RideProvider>
+        <Header />
+        <Container>
+          <aside className="w-full">
+            <EstimateRideForm />
+          </aside>
+          <div className="md:col-span-2 lg:col-span-3 ">
+            <Outlet />
+          </div>
+        </Container>
 
-      {/* Outlet para renderizar as rotas filhas */}
-      <Outlet />
-    </div>
+        <Footer />
+      </RideProvider>
+    </main>
   );
 };
 
