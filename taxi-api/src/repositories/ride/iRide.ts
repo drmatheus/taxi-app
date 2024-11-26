@@ -13,7 +13,10 @@ export type RideOrderBy = {
 
 interface IRideRepository {
   create(data: CreateRideDTO): Promise<RideDTO>;
-  getAll(filter?: RideFilter, orderBy?: RideOrderBy): Promise<RideDTO[]>;
+  getAll(
+    filter?: RideFilter,
+    orderBy?: RideOrderBy
+  ): Promise<Omit<RideDTO, 'driver_id'>[]>;
   getOne(id: number): Promise<RideDTO | null>;
 }
 

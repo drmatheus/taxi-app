@@ -8,7 +8,7 @@ export type TRideEstimated = {
     name: string;
     description: string;
     vehicle: string;
-    rating: {
+    review: {
       comment: string;
       rating: number;
     };
@@ -31,7 +31,10 @@ export type TRideHistoryResponse = {
     distance: number;
     duration: string;
     value: number;
-    driver_id: number;
+    driver: {
+      id: number;
+      name: string;
+    };
     customer_id: string;
   }[];
 };

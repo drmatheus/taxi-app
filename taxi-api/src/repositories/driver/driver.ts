@@ -1,9 +1,11 @@
+import { PrismaClient } from '@prisma/client';
 import { prisma } from '../../database/prismaClient';
 import { DriverDTO } from '../../dtos/driver/driverDTO';
 import { AppError } from '../../error';
 import IDriverRepository, { DriverFilter } from './iDriver';
 
 export class DriverRepository implements IDriverRepository {
+  constructor(private prisma: PrismaClient) {}
   async getAll(filter: DriverFilter): Promise<DriverDTO[]> {
     return await prisma.driver.findMany({
       where: {
@@ -12,12 +14,15 @@ export class DriverRepository implements IDriverRepository {
         },
       },
       include: {
-        rating: {
+        review: {
           select: {
             comment: true,
             rating: true,
           },
         },
+      },
+      orderBy: {
+        fee: 'asc',
       },
     });
   }
@@ -33,9 +38,11 @@ export class DriverRepository implements IDriverRepository {
     });
 
     if (!driver && throwError) {
-      throw new AppError('DRIVER_NOT_FOUND', 'Driver not found.', 404);
+      throw new AppError('DRIVER_NOT_FOUND', 'Motorista não encontrado', 404);
     }
 
     return driver as T extends true ? DriverDTO : DriverDTO | null;
   }
 }
+
+export const driverRepositoryInstance = new DriverRepository(prisma);

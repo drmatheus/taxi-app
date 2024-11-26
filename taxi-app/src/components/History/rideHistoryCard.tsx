@@ -7,7 +7,7 @@ const RideHistoryCard = ({
   distance,
   duration,
   value,
-  driver_id,
+  driver: { name },
   customer_id,
 }: TRideHistory) => {
   return (
@@ -18,8 +18,18 @@ const RideHistoryCard = ({
       </div>
 
       <div className=" md:col-span-2 lg:col-span-3">
-        <p className="font-bold">Destination</p>
+        <p className="font-bold">Destino</p>
         <p>{destination}</p>
+      </div>
+
+      <div>
+        <p className="font-bold ">Motorista</p>
+        <p>{name}</p>
+      </div>
+
+      <div>
+        <p className="font-bold ">Passageiro</p>
+        <p>{customer_id}</p>
       </div>
 
       <div>
@@ -50,16 +60,6 @@ const RideHistoryCard = ({
             currency: 'BRL',
           })}
         </p>
-      </div>
-
-      <div>
-        <p className="font-bold ">ID Motorista</p>
-        <p>{driver_id}</p>
-      </div>
-
-      <div>
-        <p className="font-bold ">ID Passageiro</p>
-        <p>{customer_id}</p>
       </div>
     </li>
   );

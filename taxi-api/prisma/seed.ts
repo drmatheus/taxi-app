@@ -3,13 +3,22 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
+  console.log('Starting seed...');
+
+  const driversFound = await prisma.driver.findMany();
+
+  if (driversFound.length > 0) {
+    console.log('Drivers already exist');
+    return;
+  }
+
   const drivers = [
     {
       name: 'Homer Simpson',
       description:
         'Olá! Sou o Homer, seu motorista camarada! Relaxe e aproveite o passeio, com direito a rosquinhas e boas risadas (e talvez alguns desvios).',
       vehicle: 'Plymouth Valiant 1973 rosa e enferrujado',
-      rating: {
+      review: {
         rating: 2,
         comment:
           'Motorista simpático, mas errou o caminho 3 vezes. O carro cheira a donuts.',
@@ -22,7 +31,7 @@ async function main() {
       description:
         'Ei, aqui é o Dom. Pode entrar, vou te levar com segurança e rapidez ao seu destino. Só não mexa no rádio, a playlist é sagrada.',
       vehicle: 'Dodge Charger R/T 1970 modificado',
-      rating: {
+      review: {
         rating: 4,
         comment:
           'Que viagem incrível! O carro é um show à parte e o motorista, apesar de ter uma cara de poucos amigos, foi super gente boa. Recomendo!',
@@ -35,7 +44,7 @@ async function main() {
       description:
         'Boa noite, sou James Bond. À seu dispor para um passeio suave e discreto. Aperte o cinto e aproveite a viagem.',
       vehicle: 'Aston Martin DB5 clássico',
-      rating: {
+      review: {
         rating: 5,
         comment:
           'Serviço impecável! O motorista é a própria definição de classe e o carro é simplesmente magnífico. Uma experiência digna de um agente secreto.',
@@ -46,15 +55,15 @@ async function main() {
   ];
 
   for (const driver of drivers) {
-    const { rating, ...driverData } = driver;
+    const { review, ...driverData } = driver;
     const createdDriver = await prisma.driver.create({
       data: driverData,
     });
 
-    if (rating) {
-      await prisma.rating.create({
+    if (review) {
+      await prisma.review.create({
         data: {
-          ...rating,
+          ...review,
           driver_id: createdDriver.id,
         },
       });
@@ -62,6 +71,8 @@ async function main() {
   }
 
   console.log('Seed completed');
+
+  prisma.$disconnect();
 }
 
 main()

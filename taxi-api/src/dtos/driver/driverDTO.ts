@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ratingDTO } from '../rating/ratingDTO';
+import { ReviewDTO } from '../review/reviewDTO';
 
 export const driverDTO = z.object({
   id: z.number(),
@@ -8,7 +8,7 @@ export const driverDTO = z.object({
   vehicle: z.string(),
   minDistance: z.number(),
   fee: z.number(),
-  rating: ratingDTO.partial().optional().nullable(),
+  review: ReviewDTO.partial().optional().nullable(),
 });
 
 export type DriverDTO = z.infer<typeof driverDTO>;

@@ -9,7 +9,7 @@ const RideOptionCard = (option: TRideOption) => {
     name,
     value,
     vehicle,
-    rating: { rating, comment },
+    review: { rating, comment },
   } = option;
 
   const { handleConfirmRide } = useRide();
@@ -30,7 +30,7 @@ const RideOptionCard = (option: TRideOption) => {
 
       <div className=" bg-gray-200/20 rounded-md border-gray-200 overflow-hidden border my-4">
         <p className=" text-sm px-4 py-2 font-semibold text-white bg-yellow-600">
-          Ultima avaliação:
+          Review:
         </p>
         <div className="px-4 py-2">
           <div>

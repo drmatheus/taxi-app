@@ -28,12 +28,12 @@ const EstimateRideForm = () => {
       setValue(
         'destination',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (rideEstimated as any).routeResponse.legs[0].end_address
+        (rideEstimated as any).routeResponse.routes[0].legs[0].end_address
       );
       setValue(
         'origin',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (rideEstimated as any).routeResponse.legs[0].start_address
+        (rideEstimated as any).routeResponse.routes[0].legs[0].start_address
       );
     }
   }, [rideEstimated]);

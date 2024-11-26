@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const EstimateRideDTO = z.object({
-  customerId: z.string(),
+  customer_id: z.string(),
   origin: z.string(),
   destination: z.string(),
 });

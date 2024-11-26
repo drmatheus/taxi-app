@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+
+  database:
+    image: postgres:15
+    container_name: taxi-database
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: taxi_db
+    ports:
+      - "5555:5432"  # Mapeia a porta 5432 do contêiner para a porta 5555 no host
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  # Serviço do backend
+  api:
+    build:
+      context: ./taxi-api
+      dockerfile: Dockerfile
+    container_name: taxi-api
+    ports:
+      - '8080:8080' # (local:container)
+    environment: 
+      DATABASE_URL: postgres://user:123@database:5432/taxi_db?schema=public
+    env_file:
+      - .env # Carrega variáveis do arquivo .env
+    depends_on:
+      - database # Espera o serviço do banco de dados
+    command: >
+      sh -c "
+      until npx prisma migrate dev --schema=prisma/schema.prisma; do
+      echo 'Waiting for database...';
+      sleep 2;
+      done;
+      npm run seed && npm run dev"
+
+    volumes:
+      - ./taxi-api:/app
+
+  # Serviço do frontend
+  app:
+    build:
+      context: ./taxi-app
+      dockerfile: Dockerfile
+    container_name: taxi-app
+    ports:
+      - '80:80' # (local:container)
+    depends_on:
+      - api # Espera o backend
+    volumes:
+      - ./taxi-app:/app
+
+volumes:
+  db-data:

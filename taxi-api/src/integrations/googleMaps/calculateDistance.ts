@@ -30,7 +30,10 @@ export const calculateDistance = async (
     });
 
     if (data.status !== 'OK' || data.routes.length === 0) {
-      throw new AppError('INVALID_DATA', 'Destination or origin not found.');
+      throw new AppError(
+        'INVALID_DATA',
+        'Endereço de origem ou destino inválido.'
+      );
     } else {
       const route = data.routes[0];
       const leg = route.legs[0];
@@ -56,11 +59,14 @@ export const calculateDistance = async (
           lng: originLng,
         },
         routeResponse: {
-          ...route,
+          ...data,
         },
       };
     }
   } catch (error) {
-    throw new AppError('INVALID_DATA', 'Destination or origin not found.');
+    throw new AppError(
+      'INVALID_DATA',
+      'Endereço de origem ou destino inválido.'
+    );
   }
 };

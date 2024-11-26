@@ -98,9 +98,11 @@ export const RideProvider = ({ children }: { children: React.ReactNode }) => {
         await api.patch(`/ride/confirm`, {
           customer_id,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          origin: (rideEstimated as any).routeResponse.legs[0].start_address,
+          origin: (rideEstimated as any).routeResponse.routes[0].legs[0]
+            .start_address,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          destination: (rideEstimated as any).routeResponse.legs[0].end_address,
+          destination: (rideEstimated as any).routeResponse.routes[0].legs[0]
+            .end_address,
           distance: rideEstimated.distance * 1000,
           duration: rideEstimated.duration,
           vehicle: rideOption.vehicle,
@@ -113,6 +115,8 @@ export const RideProvider = ({ children }: { children: React.ReactNode }) => {
         toast.success('Viagem confirmada com sucesso!');
         setRideEstimated(null);
         setRideOptions([]);
+        if (customer_id) getRidesHistory(customer_id);
+        navigate('/history');
       } catch (error) {
         if (error instanceof AxiosError) {
           toast.error(

@@ -13,7 +13,10 @@ const ConfirmRideDTO = z
     }),
     value: z.number(),
   })
-  .refine(({ origin, destination }) => origin !== destination);
+  .refine(({ origin, destination }) => origin !== destination, {
+    message: 'Origem e destino devem ser diferentes',
+    path: ['destination'],
+  });
 
 export default ConfirmRideDTO;
 
